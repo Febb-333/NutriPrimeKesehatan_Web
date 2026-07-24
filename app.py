@@ -2,8 +2,9 @@ from flask import Flask
 from config import Config
 import database
 from routes.home import home_bp
+from routes.bmi import bmi_bp
 
-# Blueprint fitur lain (bmi, bmr, food, article, admin, contact)
+# Blueprint fitur lain (bmr, food, article, admin, contact)
 # akan di-import & di-register di sini secara bertahap pada tahap berikutnya.
 
 
@@ -16,6 +17,7 @@ def create_app():
 
     # Registrasi blueprint
     app.register_blueprint(home_bp)
+    app.register_blueprint(bmi_bp)
 
     return app
 
