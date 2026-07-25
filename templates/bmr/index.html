@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title %}Kalkulator BMR & TDEE — NutriPrimeKesehatan{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-top: 3.5rem;">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <span class="eyebrow"><i class="bi bi-fire"></i> Kalkulator Kesehatan</span>
+      <h1 class="mt-3 mb-2" style="font-size: clamp(1.8rem, 3vw, 2.4rem);">Hitung Kebutuhan Kalori Harian (BMR & TDEE)</h1>
+      <p class="text-muted-soft" style="max-width:580px; margin-inline:auto;">
+        Ketahui kebutuhan energi harian tubuh Anda untuk mempertahankan, menurunkan, atau menaikkan berat badan.
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <!-- ===== Form Input ===== -->
+      <div class="col-lg-5">
+        <div class="hero-visual-card">
+          <h5 class="mb-4"><i class="bi bi-pencil-square me-2" style="color: var(--color-primary);"></i>Data Anda</h5>
+          <form method="POST" action="/bmr" novalidate>
+
+            <div class="mb-3">
+              <label for="age" class="form-label fw-semibold">Umur (tahun)</label>
+              <input type="number" class="form-control" id="age" name="age"
+                     placeholder="Contoh: 22"
+                     value="{{ form_data.get('age', '') }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold d-block">Gender</label>
+              <div class="d-flex gap-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male"
+                         {% if form_data.get('gender') == 'male' %}checked{% endif %} required>
+                  <label class="form-check-label" for="genderMale">Laki-laki</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female"
+                         {% if form_data.get('gender') == 'female' %}checked{% endif %}>
+                  <label class="form-check-label" for="genderFemale">Perempuan</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="height" class="form-label fw-semibold">Tinggi Badan (cm)</label>
+              <input type="number" step="0.1" class="form-control" id="height" name="height"
+                     placeholder="Contoh: 165"
+                     value="{{ form_data.get('height', '') }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="weight" class="form-label fw-semibold">Berat Badan (kg)</label>
+              <input type="number" step="0.1" class="form-control" id="weight" name="weight"
+                     placeholder="Contoh: 60"
+                     value="{{ form_data.get('weight', '') }}" required>
+            </div>
+
+            <div class="mb-4">
+              <label for="activity" class="form-label fw-semibold">Tingkat Aktivitas</label>
+              <select class="form-select" id="activity" name="activity" required>
+                <option value="" disabled {% if not form_data.get('activity') %}selected{% endif %}>Pilih tingkat aktivitas</option>
+                {% for key, info in activity_levels.items() %}
+                <option value="{{ key }}" {% if form_data.get('activity') == key %}selected{% endif %}>{{ info.label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-nutriprime-primary w-100">
+              <i class="bi bi-fire me-1"></i> Hitung Kebutuhan Kalori
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ===== Hasil ===== -->
+      <div class="col-lg-6">
+        {% if result %}
+        <div class="hero-visual-card h-100">
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <div class="gauge-label">BMR</div>
+              <div class="gauge-value" style="font-size:1.8rem;">{{ result.bmr }} <span style="font-size:0.9rem; font-weight:500; color: var(--color-text-muted);">kkal</span></div>
+            </div>
+            <div class="col-6">
+              <div class="gauge-label">TDEE</div>
+              <div class="gauge-value" style="font-size:1.8rem;">{{ result.tdee }} <span style="font-size:0.9rem; font-weight:500; color: var(--color-text-muted);">kkal</span></div>
+            </div>
+          </div>
+          <p class="text-muted-soft mb-0" style="font-size:0.85rem;">
+            <i class="bi bi-activity"></i> Level aktivitas: {{ result.activity_label }}
+          </p>
+
+          <hr class="my-3">
+
+          <h6 class="mb-3"><i class="bi bi-bullseye me-1" style="color: var(--color-primary);"></i> Target Kalori Harian</h6>
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="food-card text-center p-3">
+                <div class="food-category-badge mb-2">Maintain</div>
+                <div class="fw-bold" style="font-size:1.3rem; font-family: var(--font-display);">{{ result.maintain }}</div>
+                <div class="text-muted-soft" style="font-size:0.78rem;">kkal/hari</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="food-card text-center p-3">
+                <div class="food-category-badge mb-2">Cutting</div>
+                <div class="fw-bold" style="font-size:1.3rem; font-family: var(--font-display);">{{ result.cutting }}</div>
+                <div class="text-muted-soft" style="font-size:0.78rem;">kkal/hari</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="food-card text-center p-3">
+                <div class="food-category-badge mb-2">Bulking</div>
+                <div class="fw-bold" style="font-size:1.3rem; font-family: var(--font-display);">{{ result.bulking }}</div>
+                <div class="text-muted-soft" style="font-size:0.78rem;">kkal/hari</div>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-muted-soft mt-3 mb-0" style="font-size:0.8rem;">
+            <i class="bi bi-info-circle"></i> Cutting = defisit ±500 kkal untuk menurunkan berat badan, Bulking = surplus +500 kkal untuk menaikkan berat badan/massa otot.
+          </p>
+        </div>
+        {% else %}
+        <div class="hero-visual-card h-100 d-flex flex-column align-items-center justify-content-center text-center py-5">
+          <div class="feature-icon mb-3" style="width:64px; height:64px; font-size:1.8rem;">
+            <i class="bi bi-fire"></i>
+          </div>
+          <h6 class="mb-1">Hasil Belum Tersedia</h6>
+          <p class="text-muted-soft mb-0" style="font-size:0.92rem; max-width:280px;">
+            Isi form di samping lalu klik "Hitung Kebutuhan Kalori" untuk melihat hasil BMR & TDEE Anda di sini.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
