@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Database Makanan — NutriPrimeKesehatan{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-top: 3.5rem;">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <span class="eyebrow"><i class="bi bi-egg-fried"></i> Database Makanan</span>
+      <h1 class="mt-3 mb-2" style="font-size: clamp(1.8rem, 3vw, 2.4rem);">Jelajahi Kandungan Gizi Makanan</h1>
+      <p class="text-muted-soft" style="max-width:580px; margin-inline:auto;">
+        Cari makanan favorit Anda dan ketahui kalori, protein, lemak, serta karbohidrat di dalamnya.
+      </p>
+    </div>
+
+    <!-- ===== Search & Filter ===== -->
+    <form method="GET" action="/makanan" class="row g-2 justify-content-center mb-5">
+      <div class="col-md-5">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+          <input type="text" class="form-control border-start-0" name="q"
+                 placeholder="Cari nama makanan..." value="{{ keyword }}">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" name="kategori" onchange="this.form.submit()">
+          <option value="">Semua Kategori</option>
+          {% for cat in categories %}
+          <option value="{{ cat.category }}" {% if selected_category == cat.category %}selected{% endif %}>{{ cat.category }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-auto">
+        <button type="submit" class="btn btn-nutriprime-primary w-100">Cari</button>
+      </div>
+      {% if keyword or selected_category %}
+      <div class="col-md-auto">
+        <a href="/makanan" class="btn btn-nutriprime-outline w-100">Reset</a>
+      </div>
+      {% endif %}
+    </form>
+
+    <!-- ===== Grid Hasil ===== -->
+    <div class="row g-4">
+      {% if foods %}
+        {% for food in foods %}
+        <div class="col-md-6 col-lg-3">
+          <a href="/makanan/{{ food.id }}" class="text-decoration-none">
+            <div class="food-card">
+              <div class="food-card-thumb">
+                <i class="bi bi-egg-fried"></i>
+              </div>
+              <div class="food-card-body">
+                <span class="food-category-badge">{{ food.category }}</span>
+                <h6 class="mt-3 mb-1" style="color: var(--color-text);">{{ food.name }}</h6>
+                <div class="text-muted-soft" style="font-size:0.85rem;">{{ food.calories|round|int }} kkal</div>
+                <div class="food-macro-row">
+                  <i class="bi bi-egg-fried"></i> {{ food.protein }}g Protein
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-12 text-center py-5">
+          <div class="feature-icon mb-3 mx-auto" style="width:64px; height:64px; font-size:1.8rem;">
+            <i class="bi bi-search"></i>
+          </div>
+          <h6 class="mb-1">Makanan Tidak Ditemukan</h6>
+          <p class="text-muted-soft mb-0">Coba kata kunci atau kategori lain.</p>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
