@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if mode == 'edit' else 'Tambah' }} Artikel — Admin NutriPrimeKesehatan{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 3.5rem;">
+  <div class="container">
+    <a href="/admin/artikel" class="text-decoration-none d-inline-flex align-items-center gap-1 mb-4" style="color: var(--color-text-muted); font-size:0.9rem;">
+      <i class="bi bi-arrow-left"></i> Kembali ke Daftar Artikel
+    </a>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="hero-visual-card">
+          <h5 class="mb-4">
+            <i class="bi bi-journal-medical me-2" style="color: var(--color-primary);"></i>
+            {{ 'Edit Artikel' if mode == 'edit' else 'Tulis Artikel Baru' }}
+          </h5>
+
+          <form method="POST" action="{{ '/admin/artikel/edit/' ~ article.id if mode == 'edit' else '/admin/artikel/tambah' }}" novalidate>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Judul Artikel</label>
+              <input type="text" class="form-control" name="title" value="{{ article.title if article else '' }}" required>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Konten</label>
+              <textarea class="form-control" name="content" rows="8" required>{{ article.content if article else '' }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-nutriprime-primary w-100">
+              <i class="bi bi-check-lg me-1"></i> {{ 'Simpan Perubahan' if mode == 'edit' else 'Terbitkan Artikel' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
