@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} — NutriPrimeKesehatan{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 3.5rem;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <a href="/artikel" class="text-decoration-none d-inline-flex align-items-center gap-1 mb-4" style="color: var(--color-text-muted); font-size:0.9rem;">
+          <i class="bi bi-arrow-left"></i> Kembali ke Artikel
+        </a>
+
+        <span class="eyebrow mb-3 d-inline-flex"><i class="bi bi-journal-medical"></i> Artikel Kesehatan</span>
+        <h1 class="mb-2" style="font-size: clamp(1.8rem, 3vw, 2.3rem);">{{ article.title }}</h1>
+        <p class="text-muted-soft mb-4" style="font-size:0.9rem;">
+          <i class="bi bi-calendar3 me-1"></i>{{ article.created_at | tanggal_indo }}
+        </p>
+
+        <div class="hero-visual-card">
+          <p style="white-space: pre-line; line-height: 1.8;">{{ article.content }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
