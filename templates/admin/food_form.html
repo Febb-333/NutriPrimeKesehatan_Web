@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if mode == 'edit' else 'Tambah' }} Makanan — Admin NutriPrimeKesehatan{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 3.5rem;">
+  <div class="container">
+    <a href="/admin/makanan" class="text-decoration-none d-inline-flex align-items-center gap-1 mb-4" style="color: var(--color-text-muted); font-size:0.9rem;">
+      <i class="bi bi-arrow-left"></i> Kembali ke Daftar Makanan
+    </a>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="hero-visual-card">
+          <h5 class="mb-4">
+            <i class="bi bi-egg-fried me-2" style="color: var(--color-primary);"></i>
+            {{ 'Edit Makanan' if mode == 'edit' else 'Tambah Makanan Baru' }}
+          </h5>
+
+          <form method="POST" action="{{ '/admin/makanan/edit/' ~ food.id if mode == 'edit' else '/admin/makanan/tambah' }}" novalidate>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Nama Makanan</label>
+              <input type="text" class="form-control" name="name" value="{{ food.name if food else '' }}" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Kategori</label>
+              <input type="text" class="form-control" name="category" placeholder="Contoh: Protein, Karbohidrat, Buah, Sayur"
+                     value="{{ food.category if food else '' }}" required>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label class="form-label fw-semibold">Kalori (kkal)</label>
+                <input type="number" step="0.1" class="form-control" name="calories" value="{{ food.calories if food else '' }}" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold">Protein (g)</label>
+                <input type="number" step="0.1" class="form-control" name="protein" value="{{ food.protein if food else '' }}" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold">Lemak (g)</label>
+                <input type="number" step="0.1" class="form-control" name="fat" value="{{ food.fat if food else '' }}" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold">Karbohidrat (g)</label>
+                <input type="number" step="0.1" class="form-control" name="carbs" value="{{ food.carbs if food else '' }}" required>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Deskripsi</label>
+              <textarea class="form-control" name="description" rows="3">{{ food.description if food else '' }}</textarea>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Gambar</label>
+              <input type="text" class="form-control" name="image"
+                     placeholder="img/foods/nama-file.jpg"
+                     value="{{ food.image if food else '' }}">
+            </div>
+            <button type="submit" class="btn btn-nutriprime-primary w-100">
+              <i class="bi bi-check-lg me-1"></i> {{ 'Simpan Perubahan' if mode == 'edit' else 'Tambah Makanan' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
