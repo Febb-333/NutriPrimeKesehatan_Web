@@ -15,9 +15,13 @@
       <!-- ===== Kartu Identitas Makanan ===== -->
       <div class="col-lg-4">
         <div class="hero-visual-card text-center">
-          <div class="feature-icon mx-auto mb-3" style="width:72px; height:72px; font-size:2rem;">
-            <i class="bi bi-egg-fried"></i>
-          </div>
+          {% if food.image %}
+            <img src="{{ url_for('static', filename=food.image) }}" alt="{{ food.name }}" class="food-detail-img mb-3">
+          {% else %}
+            <div class="feature-icon mx-auto mb-3" style="width:72px; height:72px; font-size:2rem;">
+              <i class="bi bi-egg-fried"></i>
+            </div>
+          {% endif %}
           <span class="food-category-badge mb-2 d-inline-block">{{ food.category }}</span>
           <h3 class="mb-0">{{ food.name }}</h3>
         </div>
