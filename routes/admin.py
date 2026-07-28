@@ -54,6 +54,7 @@ def parse_food_form(form):
         'name': form.get('name', '').strip(),
         'category': form.get('category', '').strip(),
         'description': form.get('description', '').strip(),
+        'image': form.get('image', '').strip(),
     }
 
     for field, label in [('calories', 'Kalori'), ('protein', 'Protein'),
@@ -139,12 +140,12 @@ def food_add():
             return render_template('admin/food_form.html', food=data, mode='tambah')
 
         query = """
-            INSERT INTO foods (name, calories, protein, fat, carbs, category, description)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO foods (name, calories, protein, fat, carbs, category, description, image)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
         execute_query(query, (
             data['name'], data['calories'], data['protein'],
-            data['fat'], data['carbs'], data['category'], data['description']
+            data['fat'], data['carbs'], data['category'], data['description'], data['image']
         ), commit=True)
 
         flash('Makanan berhasil ditambahkan.', 'success')
@@ -171,12 +172,12 @@ def food_edit(food_id):
 
         query = """
             UPDATE foods SET name=%s, calories=%s, protein=%s, fat=%s,
-                              carbs=%s, category=%s, description=%s
+                              carbs=%s, category=%s, description=%s, image=%s
             WHERE id=%s
         """
         execute_query(query, (
             data['name'], data['calories'], data['protein'],
-            data['fat'], data['carbs'], data['category'], data['description'], food_id
+            data['fat'], data['carbs'], data['category'], data['description'], data['image'], food_id
         ), commit=True)
 
         flash('Makanan berhasil diperbarui.', 'success')
