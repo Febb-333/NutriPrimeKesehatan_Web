@@ -155,7 +155,11 @@
           <a href="/makanan/{{ food.id }}" class="text-decoration-none">
             <div class="food-card">
               <div class="food-card-thumb">
+              {% if food.image %}
+                <img src="{{ url_for('static', filename=food.image) }}" alt="{{ food.name }}">
+              {% else %}
                 <i class="bi bi-egg-fried"></i>
+              {% endif %}
               </div>
               <div class="food-card-body">
                 <span class="food-category-badge">{{ food.category }}</span>
