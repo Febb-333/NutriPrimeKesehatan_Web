@@ -12,7 +12,7 @@ def index():
     hero, about, CTA hitung BMI, dan preview 4 makanan terbaru.
     """
     query = """
-        SELECT id, name, calories, protein, category
+        SELECT id, name, calories, protein, category, image
         FROM foods
         ORDER BY created_at DESC
         LIMIT 4

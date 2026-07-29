@@ -17,7 +17,7 @@ def index():
 
     # Query dibangun bertahap, tapi seluruh nilai dinamis tetap lewat
     # placeholder %s (prepared statement) -> aman dari SQL Injection.
-    query = "SELECT id, name, calories, protein, fat, carbs, category FROM foods WHERE 1=1"
+    query = "SELECT id, name, calories, protein, fat, carbs, category, image FROM foods WHERE 1=1"
     params = []
 
     if keyword:
